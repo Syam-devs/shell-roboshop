@@ -10,6 +10,16 @@ else
     echo "you are running with root user"
 fi
 
+VALIDATE(){
+    if [ $1 -eq 0 ]
+    then 
+        echo "installing.... $2 is success"
+    else 
+        echo "installing.... $2 is failure"
+        exit 1
+    fi
+}
+
 dnf list module mysql
 if [ $? -eq 0 ]
 then 
@@ -17,13 +27,7 @@ then
 else
     echo "mysql is not istalled need to install"
     dnf install mysql -y
-    if [ $? -eq 0 ]
-    then 
-        echo "installing.... mysql is success"
-    else 
-        echo "installing.... mysql is failure"
-        exit 1
-    fi
+    VALIDATE $? mysql
 fi
 
 # if [ $? -eq 0 ]
