@@ -51,4 +51,5 @@ VALIDATE $? "restart mongodb"
 
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $START_DATE - $END_DATE))
-echo "the time taken to complete this script : $TIME_TAKEN " | tee -a $TIME_TAKEN
+
+echo "the time taken to complete this script : $TIME_TAKEN " | tee -a $LOG_FILE
