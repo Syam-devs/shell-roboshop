@@ -11,8 +11,7 @@ LOG_FOLDER="/var/log/shell-script-logs"
 SCRIPT_NAME=$(echo $@ | cut -d '.' -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 DATE=$(TZ='Asia/Kolkata' date)
-
-mkdir -p $LOG_FOLDER
+START_DATE=$(date +%s)
 
 echo " script executing at $DATE " | tee -a $LOG_FILE
 
@@ -26,6 +25,8 @@ else
     echo -e "$G you are running with root user $N"
 fi
 
+mkdir -p $LOG_FOLDER
+
 VALIDATE(){
     if [ $1 -eq 0 ]
     then 
@@ -36,13 +37,17 @@ VALIDATE(){
     fi
 }
 
-dnf install mongodb-org -y 
+dnf install mongodb-org -y &>>$LOG_FILE
 VALIDATE $? "install mongodb"
-systemctl enable mongod 
+systemctl enable mongod &>>$LOG_FILE
 VALIDATE $? "enable mongodb"
-systemctl start mongod 
+systemctl start mongod &>>$LOG_FILE
 VALIDATE $? "start mongodb"
-sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf
+sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf &>>$LOG_FILE
 VALIDATE $? "modify mongo.conf"
-systemctl restart mongod
+systemctl restart mongod &>>$LOG_FILE
 VALIDATE $? "restart mongodb"
+
+END_DATE=$(date +%s)
+TIME_TAKEN=$START_DATE-$END_DATE
+echo "the time taken to complete this script : $TIME_TAKEN " | tee -a $TIME_TAKEN
