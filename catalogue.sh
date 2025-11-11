@@ -48,7 +48,7 @@ then
     echo "user already exist"
 else
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop 
-    VALIDATE $? "user  add"
+    VALIDATE $? " user  add "
 fi
 
 mkdir -p /app &>>$LOG_FILE
@@ -57,7 +57,7 @@ VALIDATE $? "cread app dir"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip  &>>$LOG_FILE
 VALIDATE $? "store catalogue zipfile nodejs"
 cd /app 
-unzip /tmp/catalogue.zip &>>$LOG_FILE
+unzip -o /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "unzip"
 
 cd /app 
