@@ -34,6 +34,7 @@ VALIDATE(){
         echo -e " $2 is $R failure $N " | tee -a $LOG_FILE
         exit 1
     fi
+}
 
 dnf module disable redis -y
 VALIDATE $? "DISABLE REDIS"
