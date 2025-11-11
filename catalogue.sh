@@ -6,7 +6,7 @@ Y="\e[33m"
 N="\e[0m"
 
 LOG_FOLDER="/var/log/shell-script-logs"
-SCRIPT_NAME=$(echo $@ | cut -d '.' -f1)
+SCRIPT_NAME=$(echo $0 | cut -d '.' -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 DATE=$(TZ='Asia/Kolkata' date)
 START_DATE=$(date +%S)
@@ -45,7 +45,7 @@ VALIDATE $? "install nodejs"
 id roboshop &>>$LOG_FILE
 if [ $? -eq 0 ]
 then 
-    echo "user already exist"
+    echo " user already exist "
 else
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop 
     VALIDATE $? " user  add "
@@ -77,7 +77,7 @@ VALIDATE $? "start nodejs"
 cp /$SRC_DIR/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
 
 dnf install mongodb-mongosh -y &>>$LOG_FILE
-VALIDATE $? "install mongodb-mongos"
+VALIDATE $? "install mongodb-mongosh"
 
 mongosh --host 172.31.31.82 </app/db/master-data.js &>>$LOG_FILE
 VALIDATE $? "load data mongodb"
