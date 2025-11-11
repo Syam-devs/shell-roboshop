@@ -51,16 +51,16 @@ else
     VALIDATE $? " user  add "
 fi
 
-mkdir -p /userapp &>>$LOG_FILE
-VALIDATE $? "cread userapp dir"
+mkdir -p /app &>>$LOG_FILE
+VALIDATE $? "cread app dir"
 
 curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip  &>>$LOG_FILE
 VALIDATE $? "store user zipfile nodejs"
-cd /userapp 
+cd /app 
 unzip -o /tmp/user.zip &>>$LOG_FILE
 VALIDATE $? "unzip"
 
-cd /userapp 
+cd /app 
 npm install &>>$LOG_FILE
 VALIDATE $? "install npm package nodejs"
 
