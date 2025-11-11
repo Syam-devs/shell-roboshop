@@ -36,7 +36,8 @@ VALIDATE(){
         exit 1
     fi
 }
-
+cp mongo.repo /etc/yum.repos.d/mongo.repo
+VALIDATE $? "copy mongodb repo"
 dnf install mongodb-org -y &>>$LOG_FILE
 VALIDATE $? "install mongodb"
 systemctl enable mongod &>>$LOG_FILE
