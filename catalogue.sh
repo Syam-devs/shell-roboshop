@@ -56,7 +56,7 @@ cd /app
 npm install 
 VALIDATE $? "install npm package nodejs"
 
-cp $SRC_DIR/catalogue.service /etc/systemd/system/catalogue.service
+cp /$SRC_DIR/catalogue.service /etc/systemd/system/catalogue.service
 
 systemctl daemon-reload
 VALIDATE $? "reload nodejs"
@@ -71,7 +71,7 @@ cp $SRC_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh -y
 VALIDATE $? "install mongodb-mongos"
 
-mongosh --host MONGODB-SERVER-IPADDRESS </app/db/master-data.js
+mongosh --host 172.31.31.82 </app/db/master-data.js
 VALIDATE $? "load data mongodb"
 
 END_DATE=$(date +%S)
