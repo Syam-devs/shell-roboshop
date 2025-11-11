@@ -42,7 +42,7 @@ VALIDATE $? "disable nodejs"
 dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "install nodejs"
 
-id roboshop
+id roboshop $LOG_FILE
 if [ $? -eq 0 ]
 then 
     echo "user already exist"
