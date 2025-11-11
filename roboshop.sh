@@ -1,0 +1,8 @@
+echo "Creating EC2 instance..."
+AMI_ID="ami-09c813fb71547fc4f"
+INSTANCE_TYPE="t2.micro"
+KEY_NAME="mangodb"
+SECURITY_GROUP_IDS="sg-00c18b23c2b3c13c0"
+INSTANCE_NAME="Shell-Script-EC2-Demo"
+create_ec2_instance "$AMI_ID" "$INSTANCE_TYPE" "$KEY_NAME" "$SUBNET_ID" "$SECURITY_GROUP_IDS" "$INSTANCE_NAME"
+echo "EC2 instance creation completed."
