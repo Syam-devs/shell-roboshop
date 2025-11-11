@@ -42,12 +42,12 @@ VALIDATE $? "disable nodejs"
 dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "install nodejs"
 
-id roboshop &>>$LOG_FILE
+id roboshop1 &>>$LOG_FILE
 if [ $? -eq 0 ]
 then 
     echo " user already exist "
 else
-    useradd --system --home /userapp --shell /sbin/nologin --comment "roboshop system user" roboshop 
+    useradd --system --home /userapp --shell /sbin/nologin --comment "roboshop system user" roboshop1 
     VALIDATE $? " user  add "
 fi
 
@@ -72,7 +72,7 @@ VALIDATE $? "reload nodejs"
 systemctl enable user &>>$LOG_FILE 
 systemctl start user &>>$LOG_FILE
 
-VALIDATE $? "start nodejs"
+VALIDATE $? "start user"
 
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $END_DATE - $START_DATE ))
