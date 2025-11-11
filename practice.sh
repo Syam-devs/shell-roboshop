@@ -10,12 +10,26 @@ else
     echo "you are running with root user"
 fi
 
-
-dnf install mysql -y
-
+dnf list module mysql
 if [ $? -eq 0 ]
 then 
-    echo "installing.... mysql is success"
-else 
-    echo "installing.... mysql is failure"
+    echo "mysql is already installed"
+else
+    echo "mysql is not istalled need to install"
+    dnf install mysql -y
+    if [ $? -eq 0 ]
+    then 
+        echo "installing.... mysql is success"
+    else 
+        echo "installing.... mysql is failure"
+        exit 1
+    fi
 fi
+
+# if [ $? -eq 0 ]
+# then 
+#     echo "installing.... mysql is success"
+# else 
+#     echo "installing.... mysql is failure"
+#     exit 1
+# fi
