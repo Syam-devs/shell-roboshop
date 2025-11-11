@@ -1,11 +1,3 @@
-echo "Creating EC2 instance..."
-AMI_ID="ami-09c813fb71547fc4f"
-INSTANCE_TYPE="t2.micro"
-SECURITY_GROUP_IDS="sg-00c18b23c2b3c13c0"
-INSTANCE_NAME="Shell-Script-EC2-Demo"
-aws ec2 run-instances "$AMI_ID" "$INSTANCE_TYPE" "$SECURITY_GROUP_IDS" "$INSTANCE_NAME"
-echo "EC2 instance creation completed."
-
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-01bc7ebe005fb1cb2" # replace with your SG ID
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
