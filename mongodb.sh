@@ -11,7 +11,7 @@ LOG_FOLDER="/var/log/shell-script-logs"
 SCRIPT_NAME=$(echo $@ | cut -d '.' -f1)
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 DATE=$(TZ='Asia/Kolkata' date)
-START_DATE=$(date +%s)
+START_DATE=$(date +%S)
 
 echo " script executing at $DATE " | tee -a $LOG_FILE
 
@@ -49,6 +49,6 @@ VALIDATE $? "modify mongo.conf"
 systemctl restart mongod &>>$LOG_FILE
 VALIDATE $? "restart mongodb"
 
-END_DATE=$(date +%s)
+END_DATE=$(date +%S)
 TIME_TAKEN=$START_DATE-$END_DATE
 echo "the time taken to complete this script : $TIME_TAKEN " | tee -a $TIME_TAKEN
