@@ -47,20 +47,20 @@ if [ $? -eq 0 ]
 then 
     echo " user already exist "
 else
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop 
+    useradd --system --home /userapp --shell /sbin/nologin --comment "roboshop system user" roboshop 
     VALIDATE $? " user  add "
 fi
 
-mkdir -p /app &>>$LOG_FILE
-VALIDATE $? "cread app dir"
+mkdir -p /userapp &>>$LOG_FILE
+VALIDATE $? "cread userapp dir"
 
 curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip  &>>$LOG_FILE
 VALIDATE $? "store user zipfile nodejs"
-cd /app 
+cd /userapp 
 unzip -o /tmp/user.zip &>>$LOG_FILE
 VALIDATE $? "unzip"
 
-cd /app 
+cd /userapp 
 npm install &>>$LOG_FILE
 VALIDATE $? "install npm package nodejs"
 
@@ -73,18 +73,6 @@ systemctl enable user &>>$LOG_FILE
 systemctl start user &>>$LOG_FILE
 
 VALIDATE $? "start nodejs"
-
-cp /$SRC_DIR/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
-
-dnf install mongodb-mongosh -y &>>$LOG_FILE
-VALIDATE $? "install mongodb-mongosh"
-
-mongosh --host 172.31.31.82 </app/db/master-data.js &>>$LOG_FILE
-VALIDATE $? "load data mongodb"
-
-systemctl daemon-reload &>>$LOG_FILE
-systemctl restart user &>>$LOG_FILE
-VALIDATE $? "restart mongodb"
 
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $END_DATE - $START_DATE ))
