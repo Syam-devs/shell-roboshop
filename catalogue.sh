@@ -47,8 +47,8 @@ if [ $? -eq 0 ]
 then 
     echo "user already exist"
 else
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
-    VALIDATE $? "useradd"
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop 
+    VALIDATE $? "user  add"
 fi
 
 mkdir -p /app &>>$LOG_FILE
