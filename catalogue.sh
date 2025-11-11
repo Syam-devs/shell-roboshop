@@ -82,7 +82,8 @@ VALIDATE $? "install mongodb-mongosh"
 mongosh --host 172.31.31.82 </app/db/master-data.js &>>$LOG_FILE
 VALIDATE $? "load data mongodb"
 
-systemctl restart mongod &>>$LOG_FILE
+systemctl daemon-reload &>>$LOG_FILE
+systemctl restart catalogue &>>$LOG_FILE
 VALIDATE $? "restart mongodb"
 
 END_DATE=$(date +%S)
