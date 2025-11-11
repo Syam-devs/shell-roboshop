@@ -30,7 +30,7 @@ VALIDATE(){
     fi
 }
 
-for pack in $PACKAGE
+for pack in $(PACKAGE[@])
 do
     dnf list module $pack
     if [ $? -eq 0 ]
