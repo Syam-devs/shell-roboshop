@@ -82,6 +82,9 @@ VALIDATE $? "install mongodb-mongosh"
 mongosh --host 172.31.31.82 </app/db/master-data.js &>>$LOG_FILE
 VALIDATE $? "load data mongodb"
 
+systemctl restart mongod &>>$LOG_FILE
+VALIDATE $? "restart mongodb"
+
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $END_DATE - $START_DATE ))
 
