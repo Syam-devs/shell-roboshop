@@ -34,6 +34,7 @@ for pack in $package
 do
     dnf list module $pack
     if [ $? -eq 0 ]
+    then
         echo " $pack aready installed.."
     else
         echo " $pack installing.."
