@@ -65,6 +65,7 @@ npm install &>>$LOG_FILE
 VALIDATE $? "install npm package nodejs"
 
 cp /$SRC_DIR/user.service /etc/systemd/system/user.service
+VALIDATE $? "reload nodejs"
 
 systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "reload nodejs"
