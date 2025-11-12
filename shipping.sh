@@ -78,7 +78,7 @@ VALIDATE $? "install mysql"
 
 read -s -p "Password: " PASS
 
-cd /app/db/schema.sql
+cat /app/db/schema.sql
 if [ $? -eq 0 ]
 then 
     echo -e "$Y database $N .. already exist"
