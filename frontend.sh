@@ -36,6 +36,8 @@ VALIDATE(){
     fi
 }
 rm -rf /etc/nginx/nginx.conf
+cp /$SRC_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
+VALIDATE $? "add nginx.conf"
 
 dnf module disable nginx -y &>>$LOG_FILE
 VALIDATE $? "diable nginx"
@@ -64,8 +66,7 @@ VALIDATE $? "unzip nginx"
 
 
 
-cp /$SRC_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
-VALIDATE $? "add nginx.conf"
+
 
 systemctl restart nginx &>>$LOG_FILE
 VALIDATE $? "restart nginx"
