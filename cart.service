@@ -4,7 +4,7 @@ Description = Cart Service
 User=roboshop
 // highlight-start
 Environment=REDIS_HOST=172.31.1.148
-Environment=CATALOGUE_HOST=172.31.0.178
+Environment=CATALOGUE_HOST=172.31.0.178 
 Environment=CATALOGUE_PORT=8080
 // highlight-end
 ExecStart=/bin/node /app/server.js

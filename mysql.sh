@@ -41,7 +41,7 @@ VALIDATE $? "install mysql-server"
 systemctl enable mysqld &>>$LOG_FILE
 VALIDATE $? "enable mysqld" 
 
-systemctl start mysqld   -y &>>$LOG_FILE
+systemctl start mysqld &>>$LOG_FILE
 VALIDATE $? "start mysqld"
 
 read -s -p "Password: " PASS 
