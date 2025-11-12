@@ -63,7 +63,7 @@ VALIDATE $? "unzip"
 cd /app 
 npm install &>>$LOG_FILE
 VALIDATE $? "install npm package nodejs"
-
+rm -rf /etc/systemd/system/user.service
 cp /$SRC_DIR/user.service /etc/systemd/system/user.service
 VALIDATE $? "reload nodejs"
 
