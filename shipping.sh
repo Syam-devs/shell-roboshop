@@ -76,17 +76,21 @@ VALIDATE $? "start shipping"
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "install mysql"
 
-read -s -p "Password: " PASS
+read -s MYSQL_ROOT_PASSWORD
 
-cat /app/db/schema.sql
-if [ $? -eq 0 ]
-then 
-    echo -e "$Y database $N .. already exist"
+
+mysql -h mysql.daws84s.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' &>>$LOG_FILE
+if [ $? -ne 0 ]
+then
+    mysql -h 172.31.3.20 -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
+    mysql -h 172.31.3.20 -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql  &>>$LOG_FILE
+    mysql -h 172.31.3.20 -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
+    VALIDATE $? "Loading data into MySQL"
 else
-    echo "$G loading $N .. master data "
-    mysql -h 172.31.3.20 -uroot -p$PASS < /app/db/schema.sql
-    mysql -h 172.31.3.20 -uroot -p$PASS < /app/db/app-user.sql 
-    mysql -h 172.31.3.20 -uroot -p$PASS < /app/db/master-data.sql
+    echo -e "Data is already loaded into MySQL ... $Y SKIPPING $N"
+fi
+
+
 
 systemctl restart shipping &>>$LOG_FILE
 VALIDATE $? "restart shipping"

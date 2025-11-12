@@ -44,8 +44,8 @@ VALIDATE $? "enable mysqld"
 systemctl start mysqld &>>$LOG_FILE
 VALIDATE $? "start mysqld"
 
-read -s -p "Password: " PASS 
-mysql_secure_installation --set-root-pass $PASS
+read -s MYSQL_ROOT_PASSWORD
+mysql_secure_installation --set-root-pass $MYSQL_ROOT_PASSWORD
 
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $END_DATE - $START_DATE ))
