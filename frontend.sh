@@ -35,6 +35,7 @@ VALIDATE(){
         exit 1
     fi
 }
+rm -rf /etc/nginx/nginx.conf
 
 dnf module disable nginx -y &>>$LOG_FILE
 VALIDATE $? "diable nginx"
@@ -61,7 +62,7 @@ cd /usr/share/nginx/html
 unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? "unzip nginx"
 
-rm -rf /etc/nginx/nginx.conf
+
 
 cp /$SRC_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
 VALIDATE $? "add nginx.conf"
