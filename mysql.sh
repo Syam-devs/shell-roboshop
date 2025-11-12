@@ -43,7 +43,7 @@ VALIDATE $? "enable mysqld"
 
 systemctl start mysqld &>>$LOG_FILE
 VALIDATE $? "start mysqld"
-
+echo "enter MYSQL_ROOT_PASSWORD"
 read -s MYSQL_ROOT_PASSWORD
 mysql_secure_installation --set-root-pass $MYSQL_ROOT_PASSWORD
 

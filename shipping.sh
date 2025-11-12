@@ -75,7 +75,7 @@ VALIDATE $? "start shipping"
 
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "install mysql"
-
+echo "enter MYSQL_ROOT_PASSWORD"
 read -s MYSQL_ROOT_PASSWORD
 
 
