@@ -35,12 +35,19 @@ VALIDATE(){
         exit 1
     fi
 }
-dnf module disable nodejs -y &>>$LOG_FILE
-VALIDATE $? "disable nodejs"
-dnf module enable nodejs:20 -y &>>$LOG_FILE
-VALIDATE $? "disable nodejs" 
-dnf install nodejs -y &>>$LOG_FILE
-VALIDATE $? "install nodejs"
+
+PAY=( "python3" "gcc" "python3-devel" )
+for package in $PAY
+do
+    dnf list module $PAY
+    if [ $? -eq 0 ]
+    then 
+        echo "$Y already upadated $N "
+    else
+        dnf install $package &>>$LOG_FILE
+        VALIDATE $? " install $PAY"
+    fi
+done
 
 id roboshop &>>$LOG_FILE
 if [ $? -eq 0 ]
@@ -54,26 +61,25 @@ fi
 mkdir -p /app &>>$LOG_FILE
 VALIDATE $? "cread app dir"
 
-curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip  &>>$LOG_FILE
-VALIDATE $? "store user zipfile nodejs"
+curl -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip  &>>$LOG_FILE
+VALIDATE $? "store payment zipfile nodejs"
 cd /app 
-unzip -o /tmp/user.zip &>>$LOG_FILE
+unzip -o /tmp/payment.zip &>>$LOG_FILE
 VALIDATE $? "unzip"
 
 cd /app 
-npm install &>>$LOG_FILE
-VALIDATE $? "install npm package nodejs"
+pip3 install -r requirements.txt &>>$LOG_FILE
+VALIDATE $? "install pip install requirements.txt"
 
-cp /$SRC_DIR/user.service /etc/systemd/system/user.service
-VALIDATE $? "reload nodejs"
+cp /$SRC_DIR/payment.service /etc/systemd/system/payment.service
+VALIDATE $? "upload payment.repo"
 
 systemctl daemon-reload &>>$LOG_FILE
-VALIDATE $? "reload nodejs"
+VALIDATE $? "reload payment"
 
-systemctl enable user &>>$LOG_FILE 
-systemctl start user &>>$LOG_FILE
-
-VALIDATE $? "start user"
+systemctl enable payment &>>$LOG_FILE 
+systemctl start payment &>>$LOG_FILE
+VALIDATE $? "start payment"
 
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $END_DATE - $START_DATE ))

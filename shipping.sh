@@ -35,12 +35,9 @@ VALIDATE(){
         exit 1
     fi
 }
-dnf module disable nodejs -y &>>$LOG_FILE
+dnf install maven -y &>>$LOG_FILE
 VALIDATE $? "disable nodejs"
-dnf module enable nodejs:20 -y &>>$LOG_FILE
-VALIDATE $? "disable nodejs" 
-dnf install nodejs -y &>>$LOG_FILE
-VALIDATE $? "install nodejs"
+
 
 id roboshop &>>$LOG_FILE
 if [ $? -eq 0 ]
@@ -54,26 +51,45 @@ fi
 mkdir -p /app &>>$LOG_FILE
 VALIDATE $? "cread app dir"
 
-curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip  &>>$LOG_FILE
-VALIDATE $? "store user zipfile nodejs"
+curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip  &>>$LOG_FILE
+VALIDATE $? "store shipping zipfile nodejs"
 cd /app 
-unzip -o /tmp/user.zip &>>$LOG_FILE
+unzip -o /tmp/shipping.zip &>>$LOG_FILE
 VALIDATE $? "unzip"
 
 cd /app 
-npm install &>>$LOG_FILE
-VALIDATE $? "install npm package nodejs"
+mvn install &>>$LOG_FILE
+VALIDATE $? "install mvn package"
+mv target/shipping-1.0.jar shipping.jar 
+VALIDATE $? "name change"
 
-cp /$SRC_DIR/user.service /etc/systemd/system/user.service
+cp /$SRC_DIR/shipping.service /etc/systemd/system/shipping.service
 VALIDATE $? "reload nodejs"
 
 systemctl daemon-reload &>>$LOG_FILE
-VALIDATE $? "reload nodejs"
+VALIDATE $? "reload shipping"
 
-systemctl enable user &>>$LOG_FILE 
-systemctl start user &>>$LOG_FILE
+systemctl enable shipping &>>$LOG_FILE 
+systemctl start shipping &>>$LOG_FILE
+VALIDATE $? "start shipping"
 
-VALIDATE $? "start user"
+dnf install mysql -y &>>$LOG_FILE
+VALIDATE $? "install mysql"
+
+read -s -p "Password: " PASS
+
+cd /app/db/schema.sql
+if [ $? -eq 0 ]
+then 
+    echo -e "$Y database $N .. already exist"
+else
+    echo "$G loading $N .. master data "
+    mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p$PASS < /app/db/schema.sql
+    mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p$PASS < /app/db/app-user.sql 
+    mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p$PASS < /app/db/master-data.sql
+
+systemctl restart shipping &>>$LOG_FILE
+VALIDATE $? "restart shipping"
 
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $END_DATE - $START_DATE ))

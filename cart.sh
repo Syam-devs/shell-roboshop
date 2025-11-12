@@ -37,8 +37,10 @@ VALIDATE(){
 }
 dnf module disable nodejs -y &>>$LOG_FILE
 VALIDATE $? "disable nodejs"
+
 dnf module enable nodejs:20 -y &>>$LOG_FILE
 VALIDATE $? "disable nodejs" 
+
 dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "install nodejs"
 
@@ -54,26 +56,26 @@ fi
 mkdir -p /app &>>$LOG_FILE
 VALIDATE $? "cread app dir"
 
-curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip  &>>$LOG_FILE
-VALIDATE $? "store user zipfile nodejs"
+curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip  &>>$LOG_FILE
+VALIDATE $? "store cart zipfile nodejs"
+
 cd /app 
-unzip -o /tmp/user.zip &>>$LOG_FILE
+unzip -o /tmp/cart.zip &>>$LOG_FILE
 VALIDATE $? "unzip"
 
 cd /app 
 npm install &>>$LOG_FILE
 VALIDATE $? "install npm package nodejs"
 
-cp /$SRC_DIR/user.service /etc/systemd/system/user.service
+cp /$SRC_DIR/cart.service /etc/systemd/system/cart.service
 VALIDATE $? "reload nodejs"
 
 systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "reload nodejs"
 
-systemctl enable user &>>$LOG_FILE 
-systemctl start user &>>$LOG_FILE
-
-VALIDATE $? "start user"
+systemctl enable cart &>>$LOG_FILE 
+systemctl start cart &>>$LOG_FILE
+VALIDATE $? "start cart"
 
 END_DATE=$(date +%S)
 TIME_TAKEN=$(( $END_DATE - $START_DATE ))
