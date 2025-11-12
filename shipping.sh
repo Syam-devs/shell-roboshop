@@ -84,9 +84,9 @@ then
     echo -e "$Y database $N .. already exist"
 else
     echo "$G loading $N .. master data "
-    mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p$PASS < /app/db/schema.sql
-    mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p$PASS < /app/db/app-user.sql 
-    mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p$PASS < /app/db/master-data.sql
+    mysql -h 172.31.3.20 -uroot -p$PASS < /app/db/schema.sql
+    mysql -h 172.31.3.20 -uroot -p$PASS < /app/db/app-user.sql 
+    mysql -h 172.31.3.20 -uroot -p$PASS < /app/db/master-data.sql
 
 systemctl restart shipping &>>$LOG_FILE
 VALIDATE $? "restart shipping"

@@ -79,7 +79,7 @@ cp /$SRC_DIR/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "install mongodb-mongosh"
 
-mongosh --host 172.31.31.82 </app/db/master-data.js &>>$LOG_FILE
+mongosh --host 172.31.4.12 </app/db/master-data.js &>>$LOG_FILE
 VALIDATE $? "load data mongodb"
 
 systemctl daemon-reload &>>$LOG_FILE
